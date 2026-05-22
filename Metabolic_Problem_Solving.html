@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Metabolic Problem Solving — Media Pembelajaran Biologi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --g1:#0d4a2f; --g2:#1a6b44; --g3:#2d9156; --g4:#4db87a; --g5:#a8e6c1;
+  --g6:#e0f5ea; --cream:#faf8f2; --warm:#f0ebe0; --amber:#c47d1a;
+  --amber2:#f5a623; --red:#c0392b; --blue:#1a4a7a; --teal:#0d6b6b;
+  --dark:#0a1a10; --text:#1a2e1a; --muted:#5a7a5a;
+  --shadow: 0 8px 40px rgba(13,74,47,.15);
+  --r:16px; --r2:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  background:rgba(10,26,16,.96);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(77,184,122,.2);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 3rem; height:64px;
+}
+.nav-brand{
+  font-family:'Playfair Display',serif; font-size:1.15rem;
+  color:#fff; letter-spacing:.02em;
+  display:flex;align-items:center;gap:.6rem;
+}
+.nav-brand span{color:var(--g4);}
+.nav-links{display:flex;gap:.25rem;list-style:none;}
+.nav-links a{
+  color:rgba(255,255,255,.7); font-size:.82rem; font-weight:500;
+  text-decoration:none; padding:.4rem .75rem; border-radius:6px;
+  transition:all .2s; letter-spacing:.03em;
+}
+.nav-links a:hover,.nav-links a.active{background:rgba(77,184,122,.2);color:var(--g4);}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh; position:relative; overflow:hidden;
+  background: linear-gradient(135deg,var(--dark) 0%, #0d3020 40%, #0a1a10 100%);
+  display:flex;align-items:center;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 50%, rgba(45,145,86,.18) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(13,107,107,.15) 0%, transparent 60%);
+}
+.cells-canvas{position:absolute;inset:0;opacity:.15;}
+.hero-content{
+  position:relative;z-index:2; max-width:1200px; margin:0 auto;
+  padding:6rem 3rem 3rem; display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(77,184,122,.15); border:1px solid rgba(77,184,122,.3);
+  color:var(--g4); font-size:.78rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+  padding:.4rem 1rem; border-radius:999px; margin-bottom:1.5rem;
+}
+.hero-badge::before{content:'🧬';}
+h1.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.5rem,5vw,4rem); line-height:1.1;
+  color:#fff; margin-bottom:1rem;
+}
+h1.hero-title em{color:var(--g4);font-style:normal;}
+.hero-sub{color:rgba(255,255,255,.65);font-size:1.05rem;line-height:1.7;margin-bottom:2rem;}
+.hero-meta{
+  display:flex;gap:2rem;margin-bottom:2.5rem;
+}
+.hero-meta-item{text-align:center;}
+.hero-meta-item .num{
+  font-family:'Playfair Display',serif; font-size:2rem; color:var(--g4); display:block;
+}
+.hero-meta-item .lbl{font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--g3); color:#fff; text-decoration:none;
+  padding:.85rem 2rem; border-radius:10px; font-weight:600; font-size:.95rem;
+  border:none;cursor:pointer; transition:all .25s;
+  box-shadow:0 4px 20px rgba(45,145,86,.4);
+}
+.btn-primary:hover{background:var(--g2);transform:translateY(-2px);box-shadow:0 6px 28px rgba(45,145,86,.5);}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:transparent; color:rgba(255,255,255,.7); text-decoration:none;
+  padding:.85rem 1.5rem; border-radius:10px; font-weight:500; font-size:.95rem;
+  border:1px solid rgba(255,255,255,.2);cursor:pointer; transition:all .25s;margin-left:.75rem;
+}
+.btn-secondary:hover{background:rgba(255,255,255,.08);color:#fff;}
+
+.hero-visual{position:relative;display:flex;justify-content:center;}
+.hero-card{
+  background:rgba(255,255,255,.05);border:1px solid rgba(77,184,122,.2);
+  border-radius:20px;padding:2rem;width:100%;max-width:420px;
+  backdrop-filter:blur(8px);
+}
+.hero-card h3{color:var(--g4);font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;}
+.topic-chips{display:flex;flex-wrap:wrap;gap:.5rem;}
+.chip{
+  background:rgba(77,184,122,.1);border:1px solid rgba(77,184,122,.25);
+  color:rgba(255,255,255,.8); font-size:.78rem; padding:.35rem .75rem; border-radius:6px;
+  display:flex;align-items:center;gap:.35rem;
+}
+.chip .icon{font-size:.9rem;}
+.tp-list{margin-top:1.5rem;}
+.tp-item{
+  display:flex;align-items:flex-start;gap:.75rem;
+  padding:.65rem 0; border-bottom:1px solid rgba(77,184,122,.1);
+  color:rgba(255,255,255,.75); font-size:.83rem; line-height:1.5;
+}
+.tp-item:last-child{border:none;}
+.tp-num{
+  background:var(--g2);color:#fff;
+  min-width:22px;height:22px;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:.1rem;
+}
+
+/* ── SECTIONS GENERAL ── */
+section{padding:5rem 3rem;}
+.section-inner{max-width:1200px;margin:0 auto;}
+.section-tag{
+  display:inline-block; color:var(--g3); font-size:.78rem; font-weight:700;
+  text-transform:uppercase;letter-spacing:.12em; margin-bottom:.75rem;
+}
+.section-title{
+  font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3.5vw,2.8rem);
+  line-height:1.15; color:var(--dark); margin-bottom:1rem;
+}
+.section-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:600px;}
+
+/* ── CP / TP ── */
+#cp-tp{background:var(--warm);}
+.cp-box{
+  background:#fff;border-radius:var(--r);padding:2rem;
+  border-left:5px solid var(--g3); box-shadow:var(--shadow);
+  margin-bottom:2rem;
+}
+.cp-box h3{color:var(--g2);font-size:.85rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.75rem;}
+.cp-box p{line-height:1.8;color:var(--text);font-size:.95rem;}
+.tp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;}
+.tp-card{
+  background:#fff;border-radius:var(--r2);padding:1.25rem;
+  border:1px solid var(--g5); box-shadow:0 2px 12px rgba(13,74,47,.07);
+  transition:all .25s; display:flex; gap:.85rem; align-items:flex-start;
+}
+.tp-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--g4);}
+.tp-icon{
+  width:40px;height:40px;border-radius:10px;background:var(--g6);
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;
+}
+.tp-card h4{font-size:.82rem;color:var(--g1);font-weight:700;margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.05em;}
+.tp-card p{font-size:.88rem;color:var(--muted);line-height:1.5;}
+
+/* ── MATERI ── */
+#materi{background:var(--cream);}
+.materi-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem;}
+.tab-btn{
+  padding:.5rem 1.1rem; border-radius:8px; border:1.5px solid var(--g5);
+  background:#fff; color:var(--muted); font-size:.83rem; font-weight:600; cursor:pointer;
+  transition:all .2s; font-family:inherit;
+}
+.tab-btn.active{background:var(--g3);border-color:var(--g3);color:#fff;}
+.tab-btn:hover:not(.active){border-color:var(--g3);color:var(--g3);}
+.materi-panel{display:none;}
+.materi-panel.active{display:block;animation:fadeIn .35s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.materi-layout{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
+.materi-text h2{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--dark);margin-bottom:.5rem;}
+.materi-text .subtitle{color:var(--g3);font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;}
+.materi-text p{color:var(--text);line-height:1.8;font-size:.95rem;margin-bottom:1rem;}
+.info-box{
+  background:var(--g6);border-radius:var(--r2);padding:1.25rem;
+  border-left:4px solid var(--g3); margin:1rem 0;
+}
+.info-box strong{color:var(--g1);display:block;margin-bottom:.5rem;font-size:.85rem;}
+.info-box p,.info-box ul{font-size:.9rem;color:var(--text);line-height:1.7;}
+.info-box ul{padding-left:1.2rem;}
+.info-box li{margin-bottom:.3rem;}
+
+.diagram-box{
+  background:#fff;border:1px solid var(--g5);border-radius:var(--r);
+  padding:1.5rem; box-shadow:0 4px 20px rgba(13,74,47,.08);
+}
+.diagram-box h4{color:var(--g2);font-size:.82rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;text-align:center;}
+
+/* Enzyme diagram */
+.enzyme-diagram{display:flex;flex-direction:column;align-items:center;gap:.75rem;}
+.enzyme-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;justify-content:center;}
+.d-node{
+  background:linear-gradient(135deg,var(--g3),var(--g2));
+  color:#fff;border-radius:10px;padding:.6rem 1rem;
+  font-size:.8rem;font-weight:600;text-align:center;min-width:90px;
+}
+.d-node.amber{background:linear-gradient(135deg,var(--amber),#a06010);}
+.d-node.blue{background:linear-gradient(135deg,var(--blue),#0d3060);}
+.d-node.teal{background:linear-gradient(135deg,var(--teal),#074040);}
+.d-node.red{background:linear-gradient(135deg,var(--red),#8b1a12);}
+.d-arrow{color:var(--g4);font-size:1.3rem;font-weight:700;}
+.d-label{font-size:.75rem;color:var(--muted);text-align:center;font-style:italic;}
+
+/* Factor cards */
+.factor-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.factor-card{
+  background:linear-gradient(135deg,var(--g6) 0%,#fff 100%);
+  border:1px solid var(--g5);border-radius:10px;padding:1rem;text-align:center;
+}
+.factor-card .ficon{font-size:1.6rem;margin-bottom:.4rem;}
+.factor-card h5{color:var(--g1);font-size:.82rem;margin-bottom:.25rem;}
+.factor-card p{color:var(--muted);font-size:.76rem;line-height:1.4;}
+
+/* Respirasi steps */
+.steps-flow{display:flex;flex-direction:column;gap:.6rem;}
+.step-item{
+  display:flex;align-items:center;gap:.75rem;
+  background:#fff;border:1px solid var(--g5);border-radius:10px;padding:.85rem 1rem;
+  transition:all .2s;cursor:default;
+}
+.step-item:hover{border-color:var(--g4);box-shadow:0 4px 12px rgba(13,74,47,.1);}
+.step-num{
+  width:36px;height:36px;border-radius:8px;
+  background:linear-gradient(135deg,var(--g3),var(--g2));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:700;flex-shrink:0;
+}
+.step-info h5{font-size:.85rem;color:var(--dark);font-weight:700;margin-bottom:.2rem;}
+.step-info .atp{font-size:.78rem;color:var(--amber);font-weight:600;}
+.step-info p{font-size:.78rem;color:var(--muted);}
+.step-arrow{color:var(--g4);text-align:center;font-size:1rem;}
+
+/* Fermentasi compare */
+.ferm-compare{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.ferm-card{
+  border-radius:10px;padding:1rem;
+  border:2px solid transparent;
+}
+.ferm-card.alkohol{background:linear-gradient(135deg,#fffbf0,#fff8e0);border-color:var(--amber2);}
+.ferm-card.laktat{background:linear-gradient(135deg,#fff0f0,#ffe8e8);border-color:#e74c3c;}
+.ferm-card h5{font-size:.85rem;font-weight:700;margin-bottom:.6rem;}
+.ferm-card.alkohol h5{color:var(--amber);}
+.ferm-card.laktat h5{color:var(--red);}
+.ferm-row{display:flex;justify-content:space-between;font-size:.78rem;padding:.25rem 0;border-bottom:1px dashed rgba(0,0,0,.08);}
+.ferm-row:last-child{border:none;}
+.ferm-row span:first-child{color:var(--muted);}
+.ferm-row span:last-child{font-weight:600;color:var(--dark);}
+
+/* Fotosintesis */
+.foto-flow{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.foto-card{border-radius:12px;padding:1.25rem;}
+.foto-card.terang{background:linear-gradient(135deg,#fffde7,#fff8d6);border:2px solid #f5c518;}
+.foto-card.gelap{background:linear-gradient(135deg,#e8f5e9,#d4edda);border:2px solid var(--g3);}
+.foto-card h5{font-size:.9rem;font-weight:700;margin-bottom:.75rem;}
+.foto-card.terang h5{color:#c17d00;}
+.foto-card.gelap h5{color:var(--g1);}
+.foto-badge{
+  display:inline-block;font-size:.72rem;font-weight:600;padding:.2rem .6rem;border-radius:4px;margin-bottom:.6rem;
+}
+.foto-card.terang .foto-badge{background:rgba(245,197,24,.2);color:#a06000;}
+.foto-card.gelap .foto-badge{background:rgba(45,145,86,.15);color:var(--g2);}
+.foto-item{font-size:.8rem;color:var(--text);margin:.3rem 0;display:flex;gap:.4rem;align-items:flex-start;}
+.foto-item::before{content:'→';color:var(--g4);flex-shrink:0;}
+
+/* ── PROBLEM SOLVING ── */
+#problem-solving{background:var(--dark);}
+#problem-solving .section-title{color:#fff;}
+#problem-solving .section-sub{color:rgba(255,255,255,.6);}
+#problem-solving .section-tag{color:var(--g4);}
+
+.ps-intro{
+  background:rgba(77,184,122,.08);border:1px solid rgba(77,184,122,.2);
+  border-radius:var(--r);padding:2rem;margin-bottom:3rem;
+  display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;
+}
+.ps-intro p{color:rgba(255,255,255,.8);line-height:1.8;font-size:.95rem;}
+.ps-steps{display:flex;flex-direction:column;gap:1rem;min-width:260px;}
+.ps-step{display:flex;align-items:center;gap:.75rem;}
+.ps-step-num{
+  width:32px;height:32px;border-radius:8px;background:rgba(77,184,122,.2);
+  border:1px solid rgba(77,184,122,.4);color:var(--g4);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0;
+}
+.ps-step p{color:rgba(255,255,255,.7);font-size:.82rem;line-height:1.4;}
+
+.kasus-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem;}
+.kasus-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--r);overflow:hidden;transition:all .3s;cursor:pointer;
+}
+.kasus-card:hover{border-color:rgba(77,184,122,.4);background:rgba(255,255,255,.06);transform:translateY(-4px);}
+.kasus-header{
+  padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.kasus-icon{
+  width:48px;height:48px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;
+}
+.kasus-icon.g{background:rgba(45,145,86,.25);}
+.kasus-icon.a{background:rgba(196,125,26,.25);}
+.kasus-icon.t{background:rgba(13,107,107,.25);}
+.kasus-icon.r{background:rgba(192,57,43,.25);}
+.kasus-icon.b{background:rgba(26,74,122,.25);}
+.kasus-icon.p{background:rgba(128,0,128,.25);}
+.kasus-meta{flex:1;}
+.kasus-meta .tag{font-size:.7rem;color:var(--g4);text-transform:uppercase;letter-spacing:.1em;font-weight:600;}
+.kasus-meta h3{color:#fff;font-size:1rem;font-weight:700;margin-top:.2rem;}
+.kasus-level{
+  font-size:.7rem;font-weight:600;padding:.25rem .6rem;border-radius:4px;
+}
+.kasus-level.c3{background:rgba(245,166,35,.2);color:var(--amber2);}
+.kasus-level.c4{background:rgba(45,145,86,.2);color:var(--g4);}
+.kasus-level.c5{background:rgba(192,57,43,.2);color:#e74c3c;}
+.kasus-level.c6{background:rgba(26,74,122,.2);color:#5b9bd5;}
+.kasus-body{padding:1.25rem 1.5rem;}
+.kasus-fenomena{
+  background:rgba(255,255,255,.04);border-radius:8px;padding:1rem;
+  font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.6;
+  border-left:3px solid rgba(77,184,122,.4);margin-bottom:.75rem;font-style:italic;
+}
+.kasus-q{font-size:.88rem;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:.5rem;}
+.kasus-q strong{color:var(--g4);}
+.kasus-expand{
+  display:flex;align-items:center;gap:.5rem;
+  color:var(--g4);font-size:.8rem;font-weight:600;
+  background:none;border:none;cursor:pointer;padding:.5rem 0;font-family:inherit;
+  transition:opacity .2s;
+}
+.kasus-expand:hover{opacity:.7;}
+.kasus-detail{
+  display:none;margin-top:.75rem;padding-top:.75rem;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.kasus-detail.open{display:block;animation:fadeIn .3s ease;}
+.kasus-guide{
+  background:rgba(77,184,122,.08);border:1px solid rgba(77,184,122,.15);
+  border-radius:8px;padding:1rem;
+}
+.kasus-guide h5{color:var(--g4);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem;}
+.kasus-guide li{
+  color:rgba(255,255,255,.65);font-size:.82rem;line-height:1.5;margin-bottom:.35rem;
+}
+
+/* ── SINTAKS PBL ── */
+#sintaks{background:var(--warm);}
+.sintaks-flow{display:flex;flex-direction:column;gap:1px;background:var(--g5);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+.sintaks-item{
+  background:#fff;padding:1.75rem 2rem;
+  display:grid;grid-template-columns:auto 1fr 1fr;gap:1.5rem;align-items:start;
+  transition:background .2s;
+}
+.sintaks-item:hover{background:#f8fdf9;}
+.sintaks-num{
+  width:48px;height:48px;border-radius:12px;
+  background:linear-gradient(135deg,var(--g3),var(--g2));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; flex-shrink:0;
+}
+.sintaks-main h4{color:var(--g1);font-size:1rem;font-weight:700;margin-bottom:.5rem;}
+.sintaks-main p{color:var(--text);font-size:.88rem;line-height:1.7;}
+.sintaks-side{}
+.sintaks-indicator{
+  background:var(--g6);border-radius:8px;padding:.75rem;margin-bottom:.5rem;
+}
+.sintaks-indicator .label{font-size:.72rem;color:var(--g2);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;}
+.sintaks-indicator p{font-size:.82rem;color:var(--text);line-height:1.5;}
+
+/* ── KOMUNIKASI ── */
+#komunikasi{background:var(--cream);}
+.kom-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.kom-card{
+  background:#fff;border-radius:var(--r);padding:1.75rem;
+  border:1px solid var(--g5);box-shadow:0 2px 12px rgba(13,74,47,.06);
+  transition:all .25s;
+}
+.kom-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--g4);}
+.kom-icon{font-size:2rem;margin-bottom:1rem;}
+.kom-card h4{color:var(--g1);font-size:.95rem;font-weight:700;margin-bottom:.5rem;}
+.kom-card .desc{color:var(--muted);font-size:.85rem;line-height:1.6;margin-bottom:1rem;}
+.kom-items{list-style:none;}
+.kom-items li{
+  font-size:.82rem;color:var(--text);line-height:1.5;
+  padding:.35rem 0;border-bottom:1px solid var(--g6);
+  display:flex;gap:.5rem;align-items:flex-start;
+}
+.kom-items li::before{content:'✓';color:var(--g3);font-weight:700;flex-shrink:0;}
+.kom-items li:last-child{border:none;}
+
+/* ── RUBRIK ── */
+#rubrik{background:var(--warm);}
+.rubrik-table{width:100%;border-collapse:separate;border-spacing:0;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+.rubrik-table th{
+  background:var(--g2);color:#fff;padding:1rem 1.25rem;
+  font-size:.82rem;text-align:left;font-weight:600;
+}
+.rubrik-table th:first-child{border-radius:0;}
+.rubrik-table td{
+  padding:.9rem 1.25rem;font-size:.85rem;color:var(--text);
+  border-bottom:1px solid var(--g6);background:#fff;line-height:1.5;
+  vertical-align:top;
+}
+.rubrik-table tr:last-child td{border:none;}
+.rubrik-table tr:nth-child(even) td{background:#fafdf9;}
+.rubrik-table tr:hover td{background:var(--g6);}
+.skor-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border-radius:6px;font-weight:700;font-size:.8rem;
+}
+.skor-4{background:#c8e6c9;color:#1b5e20;}
+.skor-3{background:#fff9c4;color:#7a6000;}
+.skor-2{background:#ffe0b2;color:#7a3000;}
+.skor-1{background:#ffcdd2;color:#7a0000;}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--dark);color:rgba(255,255,255,.5);
+  text-align:center;padding:2.5rem;font-size:.83rem;line-height:1.7;
+}
+footer strong{color:rgba(255,255,255,.8);}
+
+/* ── SCROLL ANIMATION ── */
+.reveal{opacity:0;transform:translateY(24px);transition:all .6s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+/* ── PROGRESS BAR ── */
+.progress-bar{
+  position:fixed;top:64px;left:0;height:3px;background:var(--g4);
+  z-index:998;width:0%;transition:width .1s;
+}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);
+  z-index:1000;align-items:center;justify-content:center;padding:2rem;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:#fff;border-radius:var(--r);max-width:640px;width:100%;
+  max-height:80vh;overflow-y:auto;
+  box-shadow:0 20px 80px rgba(0,0,0,.4);
+}
+.modal-header{
+  background:var(--g2);padding:1.5rem 2rem;
+  display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;
+}
+.modal-header h3{color:#fff;font-family:'Playfair Display',serif;font-size:1.2rem;}
+.modal-close{background:none;border:none;color:rgba(255,255,255,.7);font-size:1.4rem;cursor:pointer;}
+.modal-body{padding:2rem;}
+.modal-body p{color:var(--text);line-height:1.8;font-size:.9rem;margin-bottom:1rem;}
+.modal-body h4{color:var(--g2);font-size:.9rem;font-weight:700;margin:1rem 0 .5rem;text-transform:uppercase;letter-spacing:.06em;}
+.modal-body ul{padding-left:1.2rem;}
+.modal-body li{color:var(--text);font-size:.88rem;line-height:1.6;margin-bottom:.4rem;}
+
+/* Responsive */
+@media(max-width:900px){
+  .hero-content{grid-template-columns:1fr;gap:2rem;}
+  .hero-visual{display:none;}
+  .materi-layout{grid-template-columns:1fr;}
+  .sintaks-item{grid-template-columns:auto 1fr;}
+  .sintaks-side{grid-column:2;}
+  .kom-grid{grid-template-columns:1fr 1fr;}
+  .foto-flow,.ferm-compare{grid-template-columns:1fr;}
+  nav{padding:0 1.5rem;}
+  section{padding:4rem 1.5rem;}
+}
+@media(max-width:600px){
+  .kom-grid{grid-template-columns:1fr;}
+  .factor-grid{grid-template-columns:1fr 1fr;}
+  .kasus-grid{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-brand">🧬 <span>Metabolic</span> Problem Solving</div>
+  <ul class="nav-links">
+    <li><a href="#hero">Beranda</a></li>
+    <li><a href="#cp-tp">CP & TP</a></li>
+    <li><a href="#materi">Materi</a></li>
+    <li><a href="#problem-solving">Kasus</a></li>
+    <li><a href="#sintaks">Sintaks PBL</a></li>
+    <li><a href="#komunikasi">Komunikasi</a></li>
+    <li><a href="#rubrik">Rubrik</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-badge">Media Pembelajaran Biologi SMA</div>
+      <h1 class="hero-title">Metabolic<br/><em>Problem Solving</em></h1>
+      <p class="hero-sub">Media pembelajaran berbasis Problem Based Learning (PBL) untuk meningkatkan keterampilan komunikasi dan hasil belajar siswa pada materi Metabolisme.</p>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><span class="num">6</span><span class="lbl">Topik Materi</span></div>
+        <div class="hero-meta-item"><span class="num">6</span><span class="lbl">Kasus Diskusi</span></div>
+        <div class="hero-meta-item"><span class="num">5</span><span class="lbl">Fase PBL</span></div>
+      </div>
+      <div>
+        <a href="#materi" class="btn-primary">▶ Mulai Belajar</a>
+        <a href="#problem-solving" class="btn-secondary">🔬 Lihat Kasus</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <h3>Tujuan Pembelajaran</h3>
+        <div class="tp-list">
+          <div class="tp-item"><div class="tp-num">1</div>Mendeskripsikan struktur dan fungsi enzim dalam proses metabolisme</div>
+          <div class="tp-item"><div class="tp-num">2</div>Menganalisis faktor-faktor yang memengaruhi kerja enzim</div>
+          <div class="tp-item"><div class="tp-num">3</div>Menganalisis perbedaan anabolisme dan katabolisme</div>
+          <div class="tp-item"><div class="tp-num">4</div>Menganalisis tahapan respirasi aerob</div>
+          <div class="tp-item"><div class="tp-num">5</div>Menjelaskan proses fermentasi alkohol dan asam laktat</div>
+          <div class="tp-item"><div class="tp-num">6</div>Menganalisis reaksi terang dan gelap fotosintesis</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CP & TP -->
+<section id="cp-tp">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag">Landasan Kurikulum</span>
+      <h2 class="section-title">Capaian & Tujuan Pembelajaran</h2>
+    </div>
+    <div class="reveal" style="margin:2rem 0 1.5rem">
+      <div class="cp-box">
+        <h3>Capaian Pembelajaran (CP)</h3>
+        <p>Mengaitkan hubungan antara struktur dan fungsi organel di dalam sel, menerapkan prinsip-prinsip bioproses yang terjadi di dalam sel, menganalisis keterkaitan antar sistem organ dalam tubuh untuk merespons stimulus internal dan eksternal, menerapkan prinsip pewarisan sifat, mengaitkan mekanisme evolusi dengan proses terjadinya keanekaragaman dan kelangsungan hidup organisme; menerapkan prinsip pertumbuhan dan perkembangan; serta menganalisis proses bioteknologi modern.</p>
+      </div>
+    </div>
+    <div class="tp-grid reveal">
+      <div class="tp-card"><div class="tp-icon">🧪</div><div><h4>TP 1</h4><p>Mendeskripsikan struktur dan fungsi enzim dalam proses metabolisme</p></div></div>
+      <div class="tp-card"><div class="tp-icon">🌡️</div><div><h4>TP 2</h4><p>Menganalisis faktor-faktor yang memengaruhi kerja enzim</p></div></div>
+      <div class="tp-card"><div class="tp-icon">⚡</div><div><h4>TP 3</h4><p>Menganalisis perbedaan anabolisme dan katabolisme dalam metabolisme sel</p></div></div>
+      <div class="tp-card"><div class="tp-icon">🫁</div><div><h4>TP 4</h4><p>Menganalisis tahapan respirasi aerob (glikolisis → siklus Krebs → RTE)</p></div></div>
+      <div class="tp-card"><div class="tp-icon">🍞</div><div><h4>TP 5</h4><p>Menjelaskan proses fermentasi alkohol dan fermentasi asam laktat</p></div></div>
+      <div class="tp-card"><div class="tp-icon">🌿</div><div><h4>TP 6</h4><p>Menganalisis tahap reaksi terang dan reaksi gelap fotosintesis</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MATERI -->
+<section id="materi">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag">Konten Pembelajaran</span>
+      <h2 class="section-title">Materi Metabolisme</h2>
+      <p class="section-sub">Pilih topik di bawah untuk menjelajahi setiap konsep secara mendalam.</p>
+    </div>
+
+    <div class="materi-tabs reveal" style="margin-top:2rem">
+      <button class="tab-btn active" onclick="showTab('enzim',this)">🧪 Enzim</button>
+      <button class="tab-btn" onclick="showTab('faktor',this)">🌡️ Faktor Enzim</button>
+      <button class="tab-btn" onclick="showTab('ankat',this)">⚡ Anabolisme & Katabolisme</button>
+      <button class="tab-btn" onclick="showTab('respirasi',this)">🫁 Respirasi Aerob</button>
+      <button class="tab-btn" onclick="showTab('fermentasi',this)">🍞 Fermentasi</button>
+      <button class="tab-btn" onclick="showTab('fotosintesis',this)">🌿 Fotosintesis</button>
+    </div>
+
+    <!-- ENZIM -->
+    <div class="materi-panel active" id="tab-enzim">
+      <div class="materi-layout">
+        <div class="materi-text">
+          <div class="subtitle">Topik 1 — TP 1</div>
+          <h2>Enzim sebagai Biokatalisator</h2>
+          <p>Enzim adalah protein globular yang berfungsi sebagai <strong>biokatalisator</strong> — mempercepat reaksi kimia dalam sel tanpa ikut bereaksi dan tanpa mengubah hasil akhir reaksi. Tanpa enzim, reaksi metabolisme di dalam sel berlangsung sangat lambat dan tidak mencukupi kebutuhan hidup.</p>
+          <div class="info-box">
+            <strong>Struktur Enzim</strong>
+            <ul>
+              <li><strong>Apoenzim:</strong> Bagian protein dari enzim, bersifat termolabil (rusak oleh panas)</li>
+              <li><strong>Gugus prostetik/kofaktor:</strong> Bagian non-protein (ion logam atau koenzim)</li>
+              <li><strong>Sisi aktif (active site):</strong> Bagian enzim yang berinteraksi langsung dengan substrat</li>
+              <li><strong>Holoenzim = Apoenzim + Kofaktor</strong> (enzim lengkap yang aktif)</li>
+            </ul>
+          </div>
+          <div class="info-box">
+            <strong>Sifat-sifat Enzim</strong>
+            <ul>
+              <li>Bersifat <strong>spesifik</strong> — satu enzim untuk satu substrat</li>
+              <li><strong>Dapat digunakan berulang kali</strong> (tidak habis)</li>
+              <li>Dipengaruhi oleh suhu, pH, dan konsentrasi substrat</li>
+              <li>Bekerja <strong>reversibel</strong> (dapat membantu reaksi maju dan balik)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="diagram-box">
+          <h4>Mekanisme Kerja Enzim</h4>
+          <div class="enzyme-diagram">
+            <div class="d-node">Substrat (S)</div>
+            <div class="d-arrow">↓</div>
+            <div style="text-align:center">
+              <div class="d-node amber" style="margin-bottom:.4rem">Enzim (E)</div>
+              <div class="d-label">Sisi aktif mengikat substrat</div>
+            </div>
+            <div class="d-arrow">↓</div>
+            <div class="d-node blue">Kompleks ES</div>
+            <div class="d-arrow">↓</div>
+            <div class="d-node teal">Produk (P)</div>
+            <div class="d-arrow">↓</div>
+            <div class="d-node amber">Enzim bebas kembali</div>
+          </div>
+          <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--g5)">
+            <div style="font-size:.8rem;font-weight:700;color:var(--g2);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.07em;">Dua Teori Mekanisme Kerja</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+              <div style="background:var(--g6);border-radius:8px;padding:.85rem;text-align:center">
+                <div style="font-size:.8rem;font-weight:700;color:var(--g1);margin-bottom:.3rem">🔑 Lock & Key</div>
+                <div style="font-size:.75rem;color:var(--muted);line-height:1.4">Sisi aktif berbentuk kaku, hanya cocok satu substrat spesifik</div>
+              </div>
+              <div style="background:#fff3e0;border-radius:8px;padding:.85rem;text-align:center">
+                <div style="font-size:.8rem;font-weight:700;color:var(--amber);margin-bottom:.3rem">🤝 Induced Fit</div>
+                <div style="font-size:.75rem;color:var(--muted);line-height:1.4">Sisi aktif fleksibel, menyesuaikan bentuk substrat saat mengikat</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAKTOR ENZIM -->
+    <div class="materi-panel" id="tab-faktor">
+      <div class="materi-layout">
+        <div class="materi-text">
+          <div class="subtitle">Topik 2 — TP 2</div>
+          <h2>Faktor yang Memengaruhi Kerja Enzim</h2>
+          <p>Aktivitas enzim sangat dipengaruhi oleh kondisi lingkungan. Memahami faktor-faktor ini penting untuk menjelaskan berbagai fenomena biologis dalam tubuh.</p>
+          <div class="info-box">
+            <strong>🌡️ Suhu</strong>
+            <p>Setiap enzim memiliki suhu optimum. Suhu terlalu rendah → enzim tidak aktif. Suhu terlalu tinggi → enzim terdenaturasi (struktur rusak). Pada tubuh manusia, suhu optimum enzim umumnya ~37°C.</p>
+          </div>
+          <div class="info-box">
+            <strong>⚗️ pH (Derajat Keasaman)</strong>
+            <p>pH optimum berbeda tiap enzim. Pepsin (lambung): pH 2 (asam). Tripsin (usus): pH 8 (basa). Perubahan pH mengubah muatan ionik sisi aktif enzim.</p>
+          </div>
+          <div class="info-box">
+            <strong>📊 Konsentrasi Substrat & Enzim</strong>
+            <p>Makin tinggi konsentrasi substrat → aktivitas enzim meningkat hingga titik jenuh. Setelah jenuh, kecepatan reaksi konstan meskipun substrat ditambah.</p>
+          </div>
+          <div class="info-box">
+            <strong>🚫 Inhibitor</strong>
+            <ul>
+              <li><strong>Inhibitor Kompetitif:</strong> Bersaing dengan substrat pada sisi aktif</li>
+              <li><strong>Inhibitor Non-kompetitif:</strong> Mengikat sisi alosterik, mengubah bentuk sisi aktif</li>
+            </ul>
+          </div>
+        </div>
+        <div class="diagram-box">
+          <h4>Ringkasan Faktor Enzim</h4>
+          <div class="factor-grid">
+            <div class="factor-card">
+              <div class="ficon">🌡️</div>
+              <h5>Suhu</h5>
+              <p>Optimum 37°C pada manusia. Di atas itu → denaturasi</p>
+            </div>
+            <div class="factor-card">
+              <div class="ficon">⚗️</div>
+              <h5>pH</h5>
+              <p>Setiap enzim punya pH optimum berbeda</p>
+            </div>
+            <div class="factor-card">
+              <div class="ficon">📈</div>
+              <h5>Konsentrasi Substrat</h5>
+              <p>Meningkat sampai titik jenuh (Vmax)</p>
+            </div>
+            <div class="factor-card">
+              <div class="ficon">🔬</div>
+              <h5>Konsentrasi Enzim</h5>
+              <p>Makin banyak enzim → reaksi makin cepat</p>
+            </div>
+            <div class="factor-card">
+              <div class="ficon">🚫</div>
+              <h5>Inhibitor</h5>
+              <p>Kompetitif & non-kompetitif menghambat kerja enzim</p>
+            </div>
+            <div class="factor-card">
+              <div class="ficon">💧</div>
+              <h5>Air & Kofaktor</h5>
+              <p>Diperlukan untuk aktivasi beberapa enzim</p>
+            </div>
+          </div>
+          <div style="margin-top:1rem;background:var(--g6);border-radius:8px;padding:1rem;font-size:.82rem;color:var(--text);line-height:1.6">
+            <strong style="color:var(--g2)">Contoh Kontekstual:</strong> Pada penderita demam tinggi, enzim-enzim dalam sel tubuh mulai mengalami perubahan struktur akibat suhu yang melampaui suhu optimumnya, menyebabkan gangguan metabolisme sel.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANABOLISME & KATABOLISME -->
+    <div class="materi-panel" id="tab-ankat">
+      <div class="materi-layout">
+        <div class="materi-text">
+          <div class="subtitle">Topik 3 — TP 3</div>
+          <h2>Anabolisme & Katabolisme</h2>
+          <p>Metabolisme sel terdiri dari dua jalur utama yang saling berkaitan: <strong>anabolisme</strong> (reaksi pembentukan) dan <strong>katabolisme</strong> (reaksi perombakan).</p>
+          <div class="info-box">
+            <strong>⬆️ Anabolisme (Sintesis)</strong>
+            <ul>
+              <li>Membangun molekul kompleks dari molekul sederhana</li>
+              <li>Membutuhkan energi (reaksi <em>endergonis</em>)</li>
+              <li>Menggunakan ATP sebagai sumber energi</li>
+              <li>Contoh: fotosintesis, sintesis protein, sintesis lemak</li>
+            </ul>
+          </div>
+          <div class="info-box">
+            <strong>⬇️ Katabolisme (Penguraian)</strong>
+            <ul>
+              <li>Memecah molekul kompleks menjadi sederhana</li>
+              <li>Melepaskan energi (reaksi <em>eksergonis</em>)</li>
+              <li>Menghasilkan ATP untuk digunakan sel</li>
+              <li>Contoh: respirasi sel, pencernaan, glikolisis</li>
+            </ul>
+          </div>
+          <div class="info-box">
+            <strong>🔄 Keterkaitan Anabolisme dan Katabolisme</strong>
+            <p>Energi dari katabolisme (ATP) digunakan untuk mendorong reaksi anabolisme. Kedua proses ini bekerja secara simultan dan terus-menerus dalam setiap sel hidup.</p>
+          </div>
+        </div>
+        <div class="diagram-box">
+          <h4>Perbandingan Anabolisme vs Katabolisme</h4>
+          <div style="display:flex;flex-direction:column;gap:.6rem">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;text-align:center">
+              <div style="font-size:.75rem;color:var(--muted);font-weight:700;padding:.5rem">ASPEK</div>
+              <div style="background:var(--g6);border-radius:8px;padding:.5rem;font-size:.75rem;font-weight:700;color:var(--g2)">ANABOLISME</div>
+              <div style="background:#fff5f5;border-radius:8px;padding:.5rem;font-size:.75rem;font-weight:700;color:var(--red)">KATABOLISME</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;text-align:center">
+              <div style="font-size:.78rem;color:var(--muted);padding:.4rem;display:flex;align-items:center;justify-content:center">Arah Reaksi</div>
+              <div style="background:var(--g6);border-radius:8px;padding:.5rem;font-size:.78rem">Sederhana → Kompleks</div>
+              <div style="background:#fff5f5;border-radius:8px;padding:.5rem;font-size:.78rem">Kompleks → Sederhana</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;text-align:center">
+              <div style="font-size:.78rem;color:var(--muted);padding:.4rem;display:flex;align-items:center;justify-content:center">Energi</div>
+              <div style="background:var(--g6);border-radius:8px;padding:.5rem;font-size:.78rem">Membutuhkan ATP</div>
+              <div style="background:#fff5f5;border-radius:8px;padding:.5rem;font-size:.78rem">Menghasilkan ATP</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;text-align:center">
+              <div style="font-size:.78rem;color:var(--muted);padding:.4rem;display:flex;align-items:center;justify-content:center">Jenis Reaksi</div>
+              <div style="background:var(--g6);border-radius:8px;padding:.5rem;font-size:.78rem">Endergonis</div>
+              <div style="background:#fff5f5;border-radius:8px;padding:.5rem;font-size:.78rem">Eksergonis</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;text-align:center">
+              <div style="font-size:.78rem;color:var(--muted);padding:.4rem;display:flex;align-items:center;justify-content:center">Contoh</div>
+              <div style="background:var(--g6);border-radius:8px;padding:.5rem;font-size:.76rem">Fotosintesis, Sintesis Protein</div>
+              <div style="background:#fff5f5;border-radius:8px;padding:.5rem;font-size:.76rem">Respirasi Sel, Glikolisis</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESPIRASI -->
+    <div class="materi-panel" id="tab-respirasi">
+      <div class="materi-layout">
+        <div class="materi-text">
+          <div class="subtitle">Topik 4 — TP 4</div>
+          <h2>Respirasi Aerob</h2>
+          <p>Respirasi aerob adalah proses katabolisme glukosa menggunakan oksigen untuk menghasilkan energi (ATP) secara maksimal. Berlangsung dalam tiga tahap utama.</p>
+          <div class="info-box">
+            <strong>Persamaan Umum Respirasi Aerob:</strong>
+            <p style="font-family:'DM Mono',monospace;background:#f0f0f0;padding:.5rem .75rem;border-radius:6px;margin-top:.5rem;font-size:.85rem">C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + 36-38 ATP</p>
+          </div>
+          <div class="info-box">
+            <strong>🔬 Detail Setiap Tahap</strong>
+            <ul>
+              <li><strong>Glikolisis:</strong> Sitoplasma. Glukosa (6C) → 2 Piruvat (3C). Hasil bersih: 2 ATP + 2 NADH</li>
+              <li><strong>Dekarboksilasi Oksidatif:</strong> Matriks mitokondria. 2 Piruvat → 2 Asetil-CoA + 2 CO₂ + 2 NADH</li>
+              <li><strong>Siklus Krebs:</strong> Matriks mitokondria. 2 Asetil-CoA → 4CO₂ + 6NADH + 2FADH₂ + 2 ATP</li>
+              <li><strong>Rantai Transpor Elektron:</strong> Membran dalam mitokondria. NADH & FADH₂ → 32-34 ATP + H₂O</li>
+            </ul>
+          </div>
+        </div>
+        <div class="diagram-box">
+          <h4>Alur Tahapan Respirasi Aerob</h4>
+          <div class="steps-flow">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-info">
+                <h5>Glikolisis</h5>
+                <p>Sitoplasma | Glukosa → 2 Piruvat</p>
+                <div class="atp">⚡ Hasil: 2 ATP + 2 NADH</div>
+              </div>
+            </div>
+            <div class="step-arrow">↓</div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-info">
+                <h5>Dekarboksilasi Oksidatif</h5>
+                <p>Matriks Mitokondria | Piruvat → Asetil-CoA</p>
+                <div class="atp">⚡ Hasil: 2 CO₂ + 2 NADH</div>
+              </div>
+            </div>
+            <div class="step-arrow">↓</div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-info">
+                <h5>Siklus Krebs</h5>
+                <p>Matriks Mitokondria | Asetil-CoA dioksidasi</p>
+                <div class="atp">⚡ Hasil: 2 ATP + 6 NADH + 2 FADH₂</div>
+              </div>
+            </div>
+            <div class="step-arrow">↓</div>
+            <div class="step-item">
+              <div class="step-num">4</div>
+              <div class="step-info">
+                <h5>Rantai Transpor Elektron</h5>
+                <p>Membran Dalam Mitokondria</p>
+                <div class="atp">⚡ Hasil: 32–34 ATP + H₂O</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:1rem;background:linear-gradient(135deg,var(--g6),#fff);border-radius:8px;padding:.85rem;text-align:center">
+            <div style="font-size:.75rem;color:var(--muted)">Total ATP per molekul glukosa</div>
+            <div style="font-size:2rem;font-weight:700;color:var(--g2);font-family:'Playfair Display',serif">36–38</div>
+            <div style="font-size:.75rem;color:var(--muted)">molekul ATP</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FERMENTASI -->
+    <div class="materi-panel" id="tab-fermentasi">
+      <div class="materi-layout">
+        <div class="materi-text">
+          <div class="subtitle">Topik 5 — TP 5</div>
+          <h2>Fermentasi</h2>
+          <p>Fermentasi adalah proses <strong>respirasi anaerob</strong> — pemecahan glukosa untuk menghasilkan energi <em>tanpa menggunakan oksigen</em>. Menghasilkan ATP jauh lebih sedikit dibanding respirasi aerob.</p>
+          <div class="info-box">
+            <strong>🍞 Fermentasi Alkohol</strong>
+            <ul>
+              <li>Dilakukan oleh: yeast (Saccharomyces cerevisiae) dan beberapa bakteri</li>
+              <li>Piruvat → Asetaldehida → Etanol + CO₂</li>
+              <li>Digunakan dalam: pembuatan roti, bir, tape, tempe</li>
+              <li>Hasil energi: <strong>2 ATP</strong> per glukosa</li>
+            </ul>
+          </div>
+          <div class="info-box">
+            <strong>💪 Fermentasi Asam Laktat</strong>
+            <ul>
+              <li>Dilakukan oleh: otot manusia (saat kekurangan O₂) dan bakteri asam laktat</li>
+              <li>Piruvat → Asam Laktat (menggunakan NADH)</li>
+              <li>Digunakan dalam: pembuatan yoghurt, keju, kimchi</li>
+              <li>Hasil energi: <strong>2 ATP</strong> per glukosa</li>
+              <li>Penyebab rasa pegal pada otot setelah olahraga intens</li>
+            </ul>
+          </div>
+        </div>
+        <div class="diagram-box">
+          <h4>Perbandingan Fermentasi</h4>
+          <div class="ferm-compare">
+            <div class="ferm-card alkohol">
+              <h5>🍺 Fermentasi Alkohol</h5>
+              <div class="ferm-row"><span>Pelaku</span><span>Yeast / Ragi</span></div>
+              <div class="ferm-row"><span>Substrat</span><span>Glukosa / Piruvat</span></div>
+              <div class="ferm-row"><span>Produk</span><span>Etanol + CO₂</span></div>
+              <div class="ferm-row"><span>ATP</span><span>2 ATP</span></div>
+              <div class="ferm-row"><span>Kondisi</span><span>Anaerob</span></div>
+              <div class="ferm-row"><span>Aplikasi</span><span>Roti, Tape, Bir</span></div>
+            </div>
+            <div class="ferm-card laktat">
+              <h5>💪 Fermentasi Asam Laktat</h5>
+              <div class="ferm-row"><span>Pelaku</span><span>Otot / Bakteri</span></div>
+              <div class="ferm-row"><span>Substrat</span><span>Glukosa / Piruvat</span></div>
+              <div class="ferm-row"><span>Produk</span><span>Asam Laktat</span></div>
+              <div class="ferm-row"><span>ATP</span><span>2 ATP</span></div>
+              <div class="ferm-row"><span>Kondisi</span><span>Anaerob</span></div>
+              <div class="ferm-row"><span>Aplikasi</span><span>Yoghurt, Keju</span></div>
+            </div>
+          </div>
+          <div style="margin-top:1rem;padding:.85rem;background:var(--g6);border-radius:8px;font-size:.82rem;color:var(--text);line-height:1.6">
+            <strong style="color:var(--g2)">Mengapa otot terasa pegal?</strong> Saat olahraga intens, O₂ tidak cukup → otot beralih ke fermentasi asam laktat → asam laktat menumpuk → rasa pegal dan kram pada otot.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOTOSINTESIS -->
+    <div class="materi-panel" id="tab-fotosintesis">
+      <div class="materi-layout">
+        <div class="materi-text">
+          <div class="subtitle">Topik 6 — TP 6</div>
+          <h2>Fotosintesis</h2>
+          <p>Fotosintesis adalah proses anabolisme pada tumbuhan, algae, dan sianobakteri yang mengubah energi cahaya menjadi energi kimia (glukosa) menggunakan CO₂ dan H₂O.</p>
+          <div class="info-box">
+            <strong>Persamaan Umum Fotosintesis:</strong>
+            <p style="font-family:'DM Mono',monospace;background:#f0f0f0;padding:.5rem .75rem;border-radius:6px;margin-top:.5rem;font-size:.82rem">6CO₂ + 6H₂O + cahaya → C₆H₁₂O₆ + 6O₂</p>
+          </div>
+          <div class="info-box">
+            <strong>☀️ Reaksi Terang (Light Reactions)</strong>
+            <ul>
+              <li>Tempat: Membran tilakoid (grana kloroplas)</li>
+              <li>Sumber energi: Cahaya matahari</li>
+              <li>Proses: Fotolisis air → O₂ + H⁺ + elektron</li>
+              <li>Produk: ATP + NADPH + O₂ (dilepas ke udara)</li>
+            </ul>
+          </div>
+          <div class="info-box">
+            <strong>🌑 Reaksi Gelap / Siklus Calvin</strong>
+            <ul>
+              <li>Tempat: Stroma kloroplas</li>
+              <li>Tidak membutuhkan cahaya langsung, tapi membutuhkan ATP & NADPH dari reaksi terang</li>
+              <li>Enzim utama: RuBisCO (fiksasi CO₂)</li>
+              <li>Produk: Glukosa (C₆H₁₂O₆)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="diagram-box">
+          <h4>Dua Tahap Fotosintesis</h4>
+          <div class="foto-flow">
+            <div class="foto-card terang">
+              <div class="foto-badge">☀️ Di Membran Tilakoid</div>
+              <h5>Reaksi Terang</h5>
+              <div class="foto-item">Input: Cahaya + H₂O</div>
+              <div class="foto-item">Fotolisis air menghasilkan O₂</div>
+              <div class="foto-item">Elektron melewati rantai transpor</div>
+              <div class="foto-item">Output: ATP + NADPH + O₂</div>
+            </div>
+            <div class="foto-card gelap">
+              <div class="foto-badge">🌿 Di Stroma Kloroplas</div>
+              <h5>Reaksi Gelap (Siklus Calvin)</h5>
+              <div class="foto-item">Input: CO₂ + ATP + NADPH</div>
+              <div class="foto-item">Fiksasi CO₂ oleh RuBisCO</div>
+              <div class="foto-item">Reduksi menggunakan NADPH</div>
+              <div class="foto-item">Output: Glukosa (C₆H₁₂O₆)</div>
+            </div>
+          </div>
+          <div style="margin-top:1rem;background:linear-gradient(135deg,#fffde7,#e8f5e9);border-radius:8px;padding:1rem;text-align:center;font-size:.83rem;color:var(--text);line-height:1.7">
+            <strong>🔄 Keterkaitan Fotosintesis & Respirasi:</strong><br/>
+            Glukosa dari fotosintesis → bahan bakar respirasi sel<br/>
+            CO₂ dari respirasi → digunakan kembali fotosintesis<br/>
+            O₂ dari fotosintesis → digunakan untuk respirasi aerob
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROBLEM SOLVING CASES -->
+<section id="problem-solving">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag">Metabolic Problem Solving</span>
+      <h2 class="section-title" style="color:#fff">Studi Kasus Diskusi</h2>
+      <p class="section-sub">Pilih satu kasus per kelompok. Diskusikan, analisis, dan presentasikan hasilmu di depan kelas.</p>
+    </div>
+
+    <div class="ps-intro reveal" style="margin-top:2rem">
+      <div>
+        <h3 style="color:var(--g4);font-size:.85rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.75rem">Cara Pelaksanaan Metabolic Problem Solving</h3>
+        <p>Siswa dibagi dalam kelompok 4–5 orang. Setiap kelompok mendapat satu kasus berbeda. Setiap anggota <em>wajib</em> menyampaikan pendapatnya. Setelah diskusi, presentasikan hasil di depan kelas — kelompok lain mengajukan pertanyaan dan tanggapan.</p>
+      </div>
+      <div class="ps-steps">
+        <div class="ps-step"><div class="ps-step-num">1</div><p>Baca dan pahami kasus bersama kelompok</p></div>
+        <div class="ps-step"><div class="ps-step-num">2</div><p>Diskusikan pertanyaan analisis secara bergantian</p></div>
+        <div class="ps-step"><div class="ps-step-num">3</div><p>Susun jawaban bersama secara terstruktur</p></div>
+        <div class="ps-step"><div class="ps-step-num">4</div><p>Presentasikan di depan kelas dengan percaya diri</p></div>
+        <div class="ps-step"><div class="ps-step-num">5</div><p>Tanggapi pertanyaan kelompok lain</p></div>
+      </div>
+    </div>
+
+    <div class="kasus-grid reveal">
+
+      <!-- Kasus 1 -->
+      <div class="kasus-card" onclick="toggleDetail('k1')">
+        <div class="kasus-header">
+          <div class="kasus-icon g">🏃</div>
+          <div class="kasus-meta">
+            <div class="tag">Kasus 01 — Enzim & Suhu</div>
+            <h3>Atlet Marathon yang Pingsan</h3>
+          </div>
+          <div class="kasus-level c4">C4</div>
+        </div>
+        <div class="kasus-body">
+          <div class="kasus-fenomena">"Seorang atlet marathon pingsan di km ke-30. Suhu tubuhnya mencapai 40°C akibat dehidrasi ekstrem. Dokter menduga kegagalan produksi energi karena enzim-enzim dalam sel otot tidak bekerja optimal."</div>
+          <div class="kasus-q"><strong>Pertanyaan:</strong> Analisis hubungan antara suhu tubuh yang tinggi dengan kemampuan kerja enzim! Jelaskan dampaknya terhadap produksi energi (ATP) dalam sel otot!</div>
+          <button class="kasus-expand" id="btn-k1">📋 Lihat Panduan Diskusi ↓</button>
+          <div class="kasus-detail" id="k1">
+            <div class="kasus-guide">
+              <h5>Panduan Pertanyaan Diskusi</h5>
+              <ul>
+                <li>Apa yang terjadi pada struktur protein enzim saat suhu melampaui optimumnya?</li>
+                <li>Mengapa denaturasi enzim menyebabkan produksi ATP terganggu?</li>
+                <li>Tahapan respirasi sel mana yang paling terdampak?</li>
+                <li>Bagaimana tubuh berusaha mengkompensasi kekurangan energi tersebut?</li>
+                <li>Apa tindakan pertolongan pertama yang tepat secara biologis?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kasus 2 -->
+      <div class="kasus-card" onclick="toggleDetail('k2')">
+        <div class="kasus-header">
+          <div class="kasus-icon a">🩸</div>
+          <div class="kasus-meta">
+            <div class="tag">Kasus 02 — Hipoksia & Respirasi</div>
+            <h3>Pendaki Gunung & Kekurangan O₂</h3>
+          </div>
+          <div class="kasus-level c4">C4</div>
+        </div>
+        <div class="kasus-body">
+          <div class="kasus-fenomena">"Seorang pendaki gunung di ketinggian 5.000 mdpl mengalami sesak napas, pusing, dan mudah lelah. Kadar oksigen di udara hanya 50% dibanding di permukaan laut. Kondisi ini disebut hipoksia."</div>
+          <div class="kasus-q"><strong>Pertanyaan:</strong> Analisis hubungan antara kekurangan oksigen dengan proses respirasi sel! Bagaimana sel tubuh beradaptasi dan apa dampaknya terhadap produksi ATP?</div>
+          <button class="kasus-expand" id="btn-k2">📋 Lihat Panduan Diskusi ↓</button>
+          <div class="kasus-detail" id="k2">
+            <div class="kasus-guide">
+              <h5>Panduan Pertanyaan Diskusi</h5>
+              <ul>
+                <li>Tahapan respirasi aerob mana yang paling terdampak saat O₂ berkurang?</li>
+                <li>Mengapa rantai transpor elektron tidak bisa berjalan tanpa O₂?</li>
+                <li>Jalur metabolisme apa yang diambil sel saat kekurangan O₂?</li>
+                <li>Berapa selisih ATP dari respirasi aerob vs anaerob?</li>
+                <li>Apa yang menyebabkan pendaki merasa sangat lelah?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kasus 3 -->
+      <div class="kasus-card" onclick="toggleDetail('k3')">
+        <div class="kasus-header">
+          <div class="kasus-icon t">🍞</div>
+          <div class="kasus-meta">
+            <div class="tag">Kasus 03 — Fermentasi</div>
+            <h3>Adonan Roti yang Mengembang</h3>
+          </div>
+          <div class="kasus-level c3">C3</div>
+        </div>
+        <div class="kasus-body">
+          <div class="kasus-fenomena">"Seorang pembuat roti menambahkan ragi ke adonan dan menutupnya selama 1 jam. Adonan mengembang karena ragi melakukan proses fermentasi, menghasilkan gas yang membuat adonan berpori."</div>
+          <div class="kasus-q"><strong>Pertanyaan:</strong> Gunakan konsep fermentasi untuk menjelaskan mengapa adonan roti bisa mengembang! Apa gas yang dihasilkan dan dari proses apa?</div>
+          <button class="kasus-expand" id="btn-k3">📋 Lihat Panduan Diskusi ↓</button>
+          <div class="kasus-detail" id="k3">
+            <div class="kasus-guide">
+              <h5>Panduan Pertanyaan Diskusi</h5>
+              <ul>
+                <li>Jenis fermentasi apa yang dilakukan oleh ragi (yeast)?</li>
+                <li>Apa saja produk dari fermentasi alkohol? Gas apa yang dihasilkan?</li>
+                <li>Mengapa penutupan adonan penting dalam proses fermentasi?</li>
+                <li>Berapa ATP yang dihasilkan dari fermentasi dibanding respirasi aerob?</li>
+                <li>Hubungkan proses ini dengan konsep katabolisme glukosa!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kasus 4 -->
+      <div class="kasus-card" onclick="toggleDetail('k4')">
+        <div class="kasus-header">
+          <div class="kasus-icon r">🌿</div>
+          <div class="kasus-meta">
+            <div class="tag">Kasus 04 — Fotosintesis</div>
+            <h3>Daun di Tempat Gelap</h3>
+          </div>
+          <div class="kasus-level c4">C4</div>
+        </div>
+        <div class="kasus-body">
+          <div class="kasus-fenomena">"Tanaman diletakkan di ruangan gelap 48 jam. Setelah uji lugol, daun tidak berubah biru-hitam (tidak ada amilum). Tanaman di tempat terang sebaliknya — daun biru-hitam pekat."</div>
+          <div class="kasus-q"><strong>Pertanyaan:</strong> Analisis mengapa daun di tempat gelap tidak mengandung amilum! Kaitkan dengan tahapan reaksi terang dan reaksi gelap fotosintesis!</div>
+          <button class="kasus-expand" id="btn-k4">📋 Lihat Panduan Diskusi ↓</button>
+          <div class="kasus-detail" id="k4">
+            <div class="kasus-guide">
+              <h5>Panduan Pertanyaan Diskusi</h5>
+              <ul>
+                <li>Apa yang dibutuhkan reaksi terang agar bisa berlangsung?</li>
+                <li>Mengapa reaksi gelap (siklus Calvin) tidak bisa berjalan tanpa produk reaksi terang?</li>
+                <li>Apa yang terjadi pada produksi ATP dan NADPH di tempat gelap?</li>
+                <li>Tanpa amilum, bagaimana tumbuhan mendapat energi?</li>
+                <li>Prediksi: apa yang terjadi jika tanaman terus di tempat gelap selama seminggu?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kasus 5 -->
+      <div class="kasus-card" onclick="toggleDetail('k5')">
+        <div class="kasus-header">
+          <div class="kasus-icon b">🩺</div>
+          <div class="kasus-meta">
+            <div class="tag">Kasus 05 — Diabetes & Metabolisme</div>
+            <h3>Pasien Diabetes yang Cepat Lelah</h3>
+          </div>
+          <div class="kasus-level c5">C5</div>
+        </div>
+        <div class="kasus-body">
+          <div class="kasus-fenomena">"Pasien diabetes tipe 2 merasa cepat lelah meski kadar glukosa darahnya tinggi. Sel-sel tubuhnya tidak bisa mengambil glukosa dengan efisien karena resistensi insulin, sehingga produksi ATP sangat rendah."</div>
+          <div class="kasus-q"><strong>Pertanyaan:</strong> Evaluasi mengapa kadar glukosa tinggi justru tidak berarti energi melimpah pada penderita diabetes! Kaitkan dengan proses metabolisme di tingkat sel!</div>
+          <button class="kasus-expand" id="btn-k5">📋 Lihat Panduan Diskusi ↓</button>
+          <div class="kasus-detail" id="k5">
+            <div class="kasus-guide">
+              <h5>Panduan Pertanyaan Diskusi</h5>
+              <ul>
+                <li>Mengapa glukosa yang tinggi di darah tidak otomatis menghasilkan ATP?</li>
+                <li>Peran insulin dalam proses masuknya glukosa ke dalam sel?</li>
+                <li>Jika glukosa tidak masuk sel, jalur metabolisme apa yang terganggu?</li>
+                <li>Nilailah pernyataan: "Semua metabolisme hanya berfungsi menghasilkan energi" — benar atau salah?</li>
+                <li>Apa dampak jangka panjang gangguan metabolisme ini terhadap organ tubuh?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kasus 6 -->
+      <div class="kasus-card" onclick="toggleDetail('k6')">
+        <div class="kasus-header">
+          <div class="kasus-icon p">🌱</div>
+          <div class="kasus-meta">
+            <div class="tag">Kasus 06 — Keterkaitan Metabolisme</div>
+            <h3>Siklus Kehidupan Energi Ekosistem</h3>
+          </div>
+          <div class="kasus-level c6">C6</div>
+        </div>
+        <div class="kasus-body">
+          <div class="kasus-fenomena">"Seekor sapi memakan rumput → glukosa dari fotosintesis diolah melalui respirasi aerob → saat berlari menghindari predator, otot beralih ke fermentasi → kotoran sapi diurai bakteri melalui fermentasi menghasilkan CH₄ + CO₂."</div>
+          <div class="kasus-q"><strong>Pertanyaan:</strong> Buatlah peta konsep atau bagan alur yang menghubungkan seluruh proses metabolisme dalam skenario ini! Jelaskan keterkaitan antar prosesnya!</div>
+          <button class="kasus-expand" id="btn-k6">📋 Lihat Panduan Diskusi ↓</button>
+          <div class="kasus-detail" id="k6">
+            <div class="kasus-guide">
+              <h5>Panduan Pertanyaan Diskusi</h5>
+              <ul>
+                <li>Identifikasi semua proses metabolisme dalam skenario (min. 4 proses)</li>
+                <li>Bagaimana CO₂ bersirkulasi antara fotosintesis dan respirasi?</li>
+                <li>Mengapa ATP dari fermentasi tidak cukup untuk berlari jarak jauh?</li>
+                <li>Rancang bagan alur energi dari matahari → sapi → ekosistem</li>
+                <li>Apa yang akan terjadi pada ekosistem jika satu proses metabolisme terhenti?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SINTAKS PBL -->
+<section id="sintaks">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag">Model Pembelajaran</span>
+      <h2 class="section-title">Sintaks PBL & Indikator Komunikasi</h2>
+      <p class="section-sub">Lima fase Problem Based Learning yang terintegrasi dengan pengembangan keterampilan komunikasi siswa.</p>
+    </div>
+    <div class="sintaks-flow reveal" style="margin-top:2rem">
+      <div class="sintaks-item">
+        <div class="sintaks-num">1</div>
+        <div class="sintaks-main">
+          <h4>Penyajian Fenomena</h4>
+          <p>Guru memperlihatkan fenomena kontekstual terkait metabolisme melalui media Metabolic Problem Solving (kasus hipoksia, kelelahan otot, aktivitas enzim), kemudian memberikan pertanyaan pemantik agar peserta didik mendiskusikan penyebab dan solusinya.</p>
+        </div>
+        <div class="sintaks-side">
+          <div class="sintaks-indicator">
+            <div class="label">Indikator Komunikasi</div>
+            <p>Reseptif Komunikasi — Membedakan fakta dari pendapat, mengenali maksud pesan, merangkum ide-ide utama.</p>
+          </div>
+        </div>
+      </div>
+      <div class="sintaks-item">
+        <div class="sintaks-num">2</div>
+        <div class="sintaks-main">
+          <h4>Pengelompokan & Perencanaan Tugas</h4>
+          <p>Guru membagi peserta didik ke dalam kelompok heterogen (4–5 orang) dan menjelaskan langkah penyelesaian masalah. Peserta didik berdiskusi menentukan pembagian tugas dan merancang strategi penyelesaian masalah metabolisme bersama kelompok.</p>
+        </div>
+        <div class="sintaks-side">
+          <div class="sintaks-indicator">
+            <div class="label">Indikator Komunikasi</div>
+            <p>Penggunaan Strategi Komunikasi — Menghasilkan komunikasi yang jelas, akurat, dan reflektif.</p>
+          </div>
+        </div>
+      </div>
+      <div class="sintaks-item">
+        <div class="sintaks-num">3</div>
+        <div class="sintaks-main">
+          <h4>Eksplorasi & Diskusi Informasi</h4>
+          <p>Guru membimbing peserta didik mencari informasi dari berbagai sumber belajar dan mengarahkan kegiatan pengamatan atau percobaan mengenai metabolisme. Peserta didik mendiskusikan dan menganalisis informasi yang diperoleh bersama kelompoknya.</p>
+        </div>
+        <div class="sintaks-side">
+          <div class="sintaks-indicator">
+            <div class="label">Indikator Komunikasi</div>
+            <p>Niat Membedakan — Mengidentifikasi dan menafsirkan pesan tersurat/tersirat, menarik kesimpulan logis.</p>
+          </div>
+        </div>
+      </div>
+      <div class="sintaks-item">
+        <div class="sintaks-num">4</div>
+        <div class="sintaks-main">
+          <h4>Presentasi & Pertukaran Informasi</h4>
+          <p>Guru meminta setiap kelompok menyampaikan hasil diskusi di depan kelas serta memberikan kesempatan kepada kelompok lain untuk bertanya dan memberikan tanggapan terhadap presentasi yang dilakukan.</p>
+        </div>
+        <div class="sintaks-side">
+          <div class="sintaks-indicator">
+            <div class="label">Indikator Komunikasi</div>
+            <p>Keterampilan Presentasi — Siap dan tepat, menanggapi isyarat audiens dengan menyesuaikan nada, kedalaman, dan kecepatan.</p>
+          </div>
+        </div>
+      </div>
+      <div class="sintaks-item">
+        <div class="sintaks-num">5</div>
+        <div class="sintaks-main">
+          <h4>Refleksi & Penilaian Pembelajaran</h4>
+          <p>Guru membimbing peserta didik melakukan refleksi terhadap proses pembelajaran dan kemampuan komunikasi selama diskusi maupun presentasi. Guru juga memberikan evaluasi serta penguatan terhadap konsep metabolisme yang dipelajari.</p>
+        </div>
+        <div class="sintaks-side">
+          <div class="sintaks-indicator">
+            <div class="label">Indikator Komunikasi</div>
+            <p>Berkomunikasi dengan Jelas untuk Tujuan — Mengenali tujuan, mengatur, dan menyajikan informasi untuk mencapainya.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KETERAMPILAN KOMUNIKASI -->
+<section id="komunikasi">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag">Greenstein (2012)</span>
+      <h2 class="section-title">Indikator Keterampilan Komunikasi</h2>
+      <p class="section-sub">Enam indikator keterampilan komunikasi yang dikembangkan melalui media Metabolic Problem Solving.</p>
+    </div>
+    <div class="kom-grid reveal" style="margin-top:2rem">
+      <div class="kom-card">
+        <div class="kom-icon">🗣️</div>
+        <h4>Lisan Komunikasi</h4>
+        <p class="desc">Kejelasan, kecepatan, volume, dan artikulasi yang kuat dalam menyampaikan informasi.</p>
+        <ul class="kom-items">
+          <li>Menyampaikan pendapat dengan jelas dan mudah dipahami</li>
+          <li>Berbicara dengan kecepatan yang sesuai</li>
+          <li>Menggunakan volume suara yang memadai</li>
+          <li>Artikulasi kata yang jelas saat menyampaikan informasi</li>
+        </ul>
+      </div>
+      <div class="kom-card">
+        <div class="kom-icon">👂</div>
+        <h4>Reseptif Komunikasi</h4>
+        <p class="desc">Mendengarkan, bereaksi, dan menanggapi dengan memahami pesan secara mendalam.</p>
+        <ul class="kom-items">
+          <li>Membedakan fakta dari pendapat dalam diskusi</li>
+          <li>Mengenali maksud pesan yang disampaikan</li>
+          <li>Merangkum ide-ide utama dari penjelasan</li>
+          <li>Mengidentifikasi dukungan terhadap suatu sudut pandang</li>
+        </ul>
+      </div>
+      <div class="kom-card">
+        <div class="kom-icon">🧠</div>
+        <h4>Niat Membedakan</h4>
+        <p class="desc">Mengidentifikasi dan menafsirkan pesan tersurat maupun tersirat secara logis.</p>
+        <ul class="kom-items">
+          <li>Memahami pesan langsung maupun tidak langsung</li>
+          <li>Menafsirkan makna dari informasi yang disampaikan</li>
+          <li>Menarik kesimpulan yang logis dari diskusi</li>
+          <li>Menghubungkan informasi untuk pemahaman lebih dalam</li>
+        </ul>
+      </div>
+      <div class="kom-card">
+        <div class="kom-icon">💡</div>
+        <h4>Strategi Komunikasi</h4>
+        <p class="desc">Menghasilkan komunikasi yang jelas, akurat, dan reflektif dalam setiap situasi.</p>
+        <ul class="kom-items">
+          <li>Menyampaikan informasi tanpa menimbulkan kesalahpahaman</li>
+          <li>Menggunakan kata-kata yang tepat dan ilmiah</li>
+          <li>Mempertimbangkan kembali apa yang akan dikatakan</li>
+          <li>Memperbaiki cara komunikasi setelah menerima masukan</li>
+        </ul>
+      </div>
+      <div class="kom-card">
+        <div class="kom-icon">🎯</div>
+        <h4>Komunikasi untuk Tujuan</h4>
+        <p class="desc">Mengenali tujuan komunikasi dan menyajikan informasi untuk mencapainya.</p>
+        <ul class="kom-items">
+          <li>Memahami tujuan dari komunikasi yang dilakukan</li>
+          <li>Menyampaikan informasi secara terstruktur</li>
+          <li>Memilih informasi yang relevan dengan topik</li>
+          <li>Menjelaskan ide dengan urutan yang sistematis</li>
+        </ul>
+      </div>
+      <div class="kom-card">
+        <div class="kom-icon">🎤</div>
+        <h4>Keterampilan Presentasi</h4>
+        <p class="desc">Menyajikan informasi dengan siap dan tepat, merespons audiens secara adaptif.</p>
+        <ul class="kom-items">
+          <li>Mempersiapkan materi dengan baik sebelum presentasi</li>
+          <li>Menyampaikan secara percaya diri dan tepat waktu</li>
+          <li>Menyesuaikan nada suara dengan kondisi audiens</li>
+          <li>Memperhatikan reaksi audiens dan menyesuaikan kecepatan</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RUBRIK PENILAIAN -->
+<section id="rubrik">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag">Instrumen Penilaian</span>
+      <h2 class="section-title">Rubrik Penilaian Keterampilan Komunikasi</h2>
+      <p class="section-sub">Gunakan rubrik ini untuk menilai keterampilan komunikasi siswa selama diskusi dan presentasi Metabolic Problem Solving.</p>
+    </div>
+    <div class="reveal" style="margin-top:2rem;overflow-x:auto">
+      <table class="rubrik-table">
+        <thead>
+          <tr>
+            <th style="min-width:160px">Indikator</th>
+            <th style="min-width:100px">Deskriptor</th>
+            <th style="min-width:200px;background:#1a6b44"><span class="skor-badge skor-4">4</span> Sangat Baik</th>
+            <th style="min-width:200px;background:#2d6b00"><span class="skor-badge skor-3">3</span> Baik</th>
+            <th style="min-width:200px;background:#6b4400"><span class="skor-badge skor-2">2</span> Cukup</th>
+            <th style="min-width:200px;background:#6b0000"><span class="skor-badge skor-1">1</span> Kurang</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Lisan Komunikasi</strong></td>
+            <td>Kejelasan, volume, artikulasi</td>
+            <td>Berbicara sangat jelas, volume tepat, artikulasi sempurna, mudah dipahami semua pendengar</td>
+            <td>Berbicara jelas dengan sedikit hambatan, volume cukup, sebagian besar dapat dipahami</td>
+            <td>Kadang tidak jelas, volume kurang konsisten, perlu diulang beberapa kali</td>
+            <td>Sulit dipahami, volume terlalu kecil atau tidak tepat, artikulasi buruk</td>
+          </tr>
+          <tr>
+            <td><strong>Reseptif Komunikasi</strong></td>
+            <td>Mendengarkan & merespons</td>
+            <td>Mendengarkan aktif, membedakan fakta-pendapat dengan tepat, merangkum ide utama dengan baik</td>
+            <td>Mendengarkan dengan baik, dapat membedakan fakta-pendapat sebagian besar waktu</td>
+            <td>Kurang fokus mendengarkan, kadang sulit membedakan fakta dan pendapat</td>
+            <td>Tidak memperhatikan penjelasan orang lain, tidak mampu merangkum informasi</td>
+          </tr>
+          <tr>
+            <td><strong>Niat Membedakan</strong></td>
+            <td>Menafsirkan pesan & kesimpulan</td>
+            <td>Dapat mengidentifikasi pesan tersurat dan tersirat, menarik kesimpulan logis yang tepat</td>
+            <td>Mampu mengidentifikasi sebagian besar pesan, kesimpulan cukup logis</td>
+            <td>Hanya memahami pesan tersurat, kesimpulan kurang tepat atau tidak lengkap</td>
+            <td>Tidak mampu menafsirkan pesan atau menarik kesimpulan yang bermakna</td>
+          </tr>
+          <tr>
+            <td><strong>Strategi Komunikasi</strong></td>
+            <td>Akurasi & refleksi</td>
+            <td>Menggunakan istilah ilmiah tepat, informasi akurat, reflektif terhadap cara berkomunikasi</td>
+            <td>Informasi sebagian besar akurat, menggunakan istilah ilmiah dengan baik</td>
+            <td>Beberapa informasi tidak akurat, penggunaan istilah ilmiah masih kurang</td>
+            <td>Informasi banyak yang tidak akurat, tidak menggunakan istilah ilmiah</td>
+          </tr>
+          <tr>
+            <td><strong>Komunikasi untuk Tujuan</strong></td>
+            <td>Struktur & relevansi</td>
+            <td>Penyampaian sangat terstruktur, informasi relevan, tujuan komunikasi jelas tercapai</td>
+            <td>Cukup terstruktur, sebagian besar relevan dengan topik metabolisme</td>
+            <td>Struktur kurang jelas, ada informasi yang tidak relevan dengan topik</td>
+            <td>Tidak terstruktur, informasi tidak relevan, tujuan komunikasi tidak tercapai</td>
+          </tr>
+          <tr>
+            <td><strong>Keterampilan Presentasi</strong></td>
+            <td>Siap, tepat, adaptif</td>
+            <td>Sangat siap, percaya diri, mampu menyesuaikan nada dan kecepatan dengan respons audiens</td>
+            <td>Siap dan percaya diri, penyesuaian audiens cukup baik</td>
+            <td>Kurang siap, kadang gugup, penyesuaian audiens terbatas</td>
+            <td>Tidak siap, gugup berlebihan, tidak merespons isyarat audiens</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="reveal" style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center">
+      <div style="background:#fff;border-radius:10px;padding:1rem 1.5rem;border:1px solid var(--g5);font-size:.88rem">
+        <strong style="color:var(--g2)">Cara Penskoran:</strong> Jumlahkan skor ke-6 indikator (skor maks = 24). 
+        Nilai = (Total Skor / 24) × 100
+      </div>
+      <div style="background:var(--g6);border-radius:10px;padding:1rem 1.5rem;border:1px solid var(--g4);font-size:.85rem;color:var(--g1)">
+        <strong>Sumber:</strong> Greenstein, L. (2012: 254). Assessing 21st Century Skills.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Metabolic Problem Solving</strong> — Media Pembelajaran Berbasis PBL</p>
+  <p>Materi Metabolisme | Biologi SMA | Keterampilan Komunikasi & Hasil Belajar</p>
+  <p style="margin-top:.5rem;font-size:.75rem">Dikembangkan berdasarkan model PBL (Arends, 2012) dan indikator komunikasi (Greenstein, 2012) · Nabila Zahrani · 240341609727</p>
+</footer>
+
+<!-- MODAL (reserved) -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-header">
+      <h3 id="modalTitle">Detail</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ── Tab switching
+function showTab(name, btn) {
+  document.querySelectorAll('.materi-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Kasus detail toggle
+function toggleDetail(id) {
+  const el = document.getElementById(id);
+  const btn = document.getElementById('btn-' + id);
+  const isOpen = el.classList.contains('open');
+  el.classList.toggle('open');
+  btn.textContent = isOpen ? '📋 Lihat Panduan Diskusi ↓' : '📋 Sembunyikan Panduan ↑';
+  event.stopPropagation();
+}
+
+// ── Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Progress bar
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const docH = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  document.getElementById('progressBar').style.width = (scrollTop / docH * 100) + '%';
+});
+
+// ── Active nav links
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+
+// ── Modal
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+}
+
+// ── Smooth scroll for nav
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
